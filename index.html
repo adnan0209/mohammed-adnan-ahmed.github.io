@@ -7,132 +7,261 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         .cybersecurity-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                        url('https://cdn.jsdelivr.net/gh/yourusername/portfolio-assets/cyber-bg.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                        url('images/cyber-bg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
         
         .glass-card {
-            background: rgba(23, 23, 23, 0.8);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .glass-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .skill-bar {
-            transition: width 1s ease-in-out;
+            width: 0;
+            transition: width 1.5s ease-in-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
+        .gradient-text {
+            background: linear-gradient(45deg, #3b82f6, #60a5fa, #93c5fd);
+            background-size: 200% auto;
+            animation: gradient 3s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .scroll-arrow {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 100;
+            cursor: pointer;
+            padding: 15px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .scroll-arrow:hover {
+            background: rgba(59, 130, 246, 0.4);
+            transform: scale(1.1);
+        }
+
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-30px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-15px) translateX(-50%);
+            }
+        }
+
+        .project-card {
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .icon-bounce {
+            transition: transform 0.3s ease;
+        }
+
+        .icon-bounce:hover {
+            transform: scale(1.2);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="bg-black text-white">
+<body class="bg-slate-900 text-white">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-card">
+    <nav class="fixed w-full z-50 glass-card visible">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div>
-                    <span class="text-xl font-bold">Mohammed Adnan Ahmed</span>
+                    <span class="text-xl font-bold gradient-text">Mohammed Adnan Ahmed</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
-                    <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
-                    <a href="#education" class="hover:text-blue-400 transition-colors">Education</a>
-                    <a href="#projects" class="hover:text-blue-400 transition-colors">Projects</a>
-                    <a href="#contact" class="hover:text-blue-400 transition-colors">Contact</a>
+                    <a href="#about" class="nav-link hover:text-blue-400 transition-colors">About</a>
+                    <a href="#expertise" class="nav-link hover:text-blue-400 transition-colors">Expertise</a>
+                    <a href="#projects" class="nav-link hover:text-blue-400 transition-colors">Projects</a>
+                    <a href="#interests" class="nav-link hover:text-blue-400 transition-colors">Interests</a>
+                    <a href="#contact" class="nav-link hover:text-blue-400 transition-colors">Contact</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen cybersecurity-bg flex items-center justify-center text-center px-4 pt-20">
-        <div class="glass-card p-8 rounded-lg max-w-3xl mx-auto animate-fade-in">
-            <img src="your-professional-photo.jpg" alt="Mohammed Adnan Ahmed" class="w-32 h-32 rounded-full mx-auto mb-6 border-2 border-blue-400">
-            <h1 class="text-4xl font-bold mb-4">Mohammed Adnan Ahmed</h1>
-            <p class="text-xl text-blue-400 mb-4">Cybersecurity Graduate Student | Security Analyst</p>
-            <p class="text-gray-300 mb-6">
-                I am a graduate student at DePaul University pursuing a Master's in Cybersecurity, backed by a Bachelor's in Computer Science Engineering. With hands-on experience in security monitoring, incident response, and cloud security, I have developed a strong foundation in cybersecurity principles and practices.
-            </p>
-            <div class="flex justify-center space-x-4">
-                <a href="https://linkedin.com/in/mohammed-adnan-ahmed-0086291a3" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition-colors">
+    <section class="min-h-screen cybersecurity-bg flex items-center justify-center px-4 pt-20 relative">
+        <div class="glass-card p-8 rounded-lg max-w-4xl mx-auto visible">
+            <img src="images/profile-photo.jpg" alt="Mohammed Adnan Ahmed" class="w-32 h-32 rounded-full mx-auto mb-6 border-2 border-blue-400">
+            <h1 class="typing-effect text-4xl font-bold mb-4 text-center gradient-text">Mohammed Adnan Ahmed</h1>
+            <p class="text-xl text-blue-400 mb-4 text-center">Cybersecurity Professional | Graduate Student</p>
+            <div class="text-gray-300 space-y-4">
+                <p>
+                    Driven by a passion for securing digital landscapes, I'm a cybersecurity professional and graduate student at DePaul University. With a Computer Science Engineering background and hands-on experience in security monitoring, incident response, and cloud security, I specialize in identifying vulnerabilities and fortifying systems against emerging threats.
+                </p>
+                <p>
+                    My journey in cybersecurity transcends technical expertise—it's about problem-solving, innovation, and collaboration. I thrive in dynamic environments where security meets strategy, whether developing blockchain solutions or implementing machine learning applications for security enhancement.
+                </p>
+            </div>
+            <div class="flex justify-center space-x-4 mt-6">
+                <a href="https://linkedin.com/in/mohammed-adnan-ahmed-0086291a3" target="_blank" 
+                   class="icon-bounce bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition-colors">
                     Connect on LinkedIn
                 </a>
-                <a href="mailto:amoha191@depaul.edu" class="border border-blue-400 hover:bg-blue-400 hover:text-black px-6 py-2 rounded-full transition-colors">
+                <a href="mailto:amoha191@depaul.edu" 
+                   class="icon-bounce border border-blue-400 hover:bg-blue-400 hover:text-black px-6 py-2 rounded-full transition-colors">
                     Contact Me
                 </a>
             </div>
         </div>
+        <div class="scroll-down-arrow">
+            <i class="fas fa-chevron-down text-3xl text-blue-400"></i>
+        </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 px-4">
+    <!-- Expertise Section -->
+    <section id="expertise" class="py-20 px-4 relative">
         <div class="max-w-6xl mx-auto">
             <div class="glass-card p-8 rounded-lg">
-                <h2 class="text-3xl font-bold mb-8 text-center">About Me</h2>
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">Technical Expertise</h2>
                 <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <p class="text-gray-300 mb-4">
-                            Currently, I serve as a Peer Mentor, guiding international students and facilitating their transition to academic life in the U.S. My experience includes my role at Genius Squad, where I provided comprehensive technical support to students and staff, diagnosing and resolving complex hardware and software issues.
-                        </p>
-                        <p class="text-gray-300">
-                            I have worked on innovative projects, including developing a blockchain-based e-voting system and a machine learning application for cyberbully detection. I am passionate about leveraging my skills to enhance security measures and contribute to a safer digital environment.
-                        </p>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Core Competencies</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>Security Monitoring & Incident Response</span>
+                                        <span>90%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>Python Scripting & Log Analysis</span>
+                                        <span>85%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span>Cloud Security</span>
+                                        <span>80%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold mb-4">Technical Skills</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span>Security Monitoring</span>
-                                    <span>90%</span>
-                                </div>
-                                <div class="w-full bg-gray-700 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span>Python Scripting</span>
-                                    <span>85%</span>
-                                </div>
-                                <div class="w-full bg-gray-700 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span>Cloud Security</span>
-                                    <span>80%</span>
-                                </div>
-                                <div class="w-full bg-gray-700 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full skill-bar" style="width: 80%"></div>
-                                </div>
-                            </div>
+                        <h3 class="text-xl font-semibold mb-4">Professional Experience</h3>
+                        <div class="space-y-4 text-gray-300">
+                            <p>
+                                At Genius Squad, I honed my technical support skills, troubleshooting complex hardware and software challenges while ensuring seamless user experiences. This role enhanced my ability to identify and resolve security vulnerabilities effectively.
+                            </p>
+                            <p>
+                                As a Peer Mentor at DePaul University, I support a diverse academic community, combining my technical expertise with leadership skills to guide international students in their academic journey.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="scroll-down-arrow">
+            <i class="fas fa-chevron-down text-3xl text-blue-400"></i>
+        </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-20 px-4">
+    <section id="projects" class="py-20 px-4 relative">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold mb-12 text-center">Projects</h2>
+            <h2 class="text-3xl font-bold mb-12 text-center gradient-text">Featured Projects</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass-card p-6 rounded-lg hover:transform hover:scale-105 transition-transform">
+                <div class="glass-card project-card p-6 rounded-lg">
                     <h3 class="text-xl font-semibold mb-3">Blockchain E-Voting System</h3>
                     <p class="text-gray-300 mb-4">
-                        Developed a secure blockchain-based e-voting system focusing on integrity and authentication.
+                        Developed a secure blockchain-based e-voting system with robust authentication mechanisms and vote integrity verification.
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="bg-blue-900 px-3 py-1 rounded-full text-sm">Blockchain</span>
@@ -140,10 +269,10 @@
                         <span class="bg-blue-900 px-3 py-1 rounded-full text-sm">Python</span>
                     </div>
                 </div>
-                <div class="glass-card p-6 rounded-lg hover:transform hover:scale-105 transition-transform">
+                <div class="glass-card project-card p-6 rounded-lg">
                     <h3 class="text-xl font-semibold mb-3">Cyberbully Detection System</h3>
                     <p class="text-gray-300 mb-4">
-                        Created a machine learning application for detecting cyberbullying in social media content.
+                        Created an ML-powered system for detecting cyberbullying in social media content using NLP and sentiment analysis.
                     </p>
                     <div class="flex flex-wrap gap-2">
                         <span class="bg-blue-900 px-3 py-1 rounded-full text-sm">Machine Learning</span>
@@ -153,32 +282,28 @@
                 </div>
             </div>
         </div>
+        <div class="scroll-down-arrow">
+            <i class="fas fa-chevron-down text-3xl text-blue-400"></i>
+        </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-4">
+    <!-- Interests Section -->
+    <section id="interests" class="py-20 px-4 relative">
         <div class="max-w-6xl mx-auto">
-            <div class="glass-card p-8 rounded-lg text-center">
-                <h2 class="text-3xl font-bold mb-8">Get in Touch</h2>
-                <div class="flex justify-center space-x-6">
-                    <a href="mailto:amoha191@depaul.edu" class="text-3xl hover:text-blue-400 transition-colors">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                    <a href="https://linkedin.com/in/mohammed-adnan-ahmed-0086291a3" target="_blank" class="text-3xl hover:text-blue-400 transition-colors">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/yourusername" target="_blank" class="text-3xl hover:text-blue-400 transition-colors">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="glass-card py-8 px-4 mt-20">
-        <div class="max-w-6xl mx-auto text-center">
-            <p class="text-gray-400">&copy; 2024 Mohammed Adnan Ahmed. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+            <div class="glass-card p-8 rounded-lg">
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">Beyond Cybersecurity</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center float-animation">
+                        <i class="fas fa-camera text-4xl text-blue-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Photography</h3>
+                        <p class="text-gray-300">Capturing moments that tell stories and enhance attention to detail</p>
+                    </div>
+                    <div class="text-center float-animation" style="animation-delay: 0.2s">
+                        <i class="fas fa-gamepad text-4xl text-blue-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Gaming</h3>
+                        <p class="text-gray-300">Developing strategic thinking and problem-solving skills</p>
+                    </div>
+                    <div class="text-center float-animation" style="animation-delay: 0.4s">
+                        <i class="fas fa-users text-4xl text-blue-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Mentoring</h3>
+                        <p class="text-gray-300">Guiding others and fostering growth in
